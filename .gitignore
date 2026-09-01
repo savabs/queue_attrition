@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.py[cod]
+.DS_Store
+
+# Raw ISO exports are re-fetchable with src/fetch.py and change daily.
+data/raw/
+
+# The labelled dataset IS tracked: it is the artifact, and git history
+# timestamps each refresh, which is what makes the base rates checkable
+# rather than merely asserted.
+!data/queue_attrition.csv
