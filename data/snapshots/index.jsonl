@@ -12,3 +12,10 @@
 {"captured_at": "2026-09-02T05:48:45+00:00", "iso": "SPP", "status": "fail", "error": "ConnectTimeout: HTTPSConnectionPool(host='opsportal.spp.org', port=443): Max retries exceeded with url: /Studies/GenerateSummaryCSV (Caused by ConnectTimeoutError(<HTTPSConnect", "rows": 0, "digest": null, "path": null}
 {"captured_at": "2026-09-02T05:48:45+00:00", "iso": "PJM", "status": "fail", "error": "ValueError: api_key must be provided or set in PJM_API_KEY env var", "rows": 0, "digest": null, "path": null}
 {"captured_at": "2026-09-02T05:48:45+00:00", "iso": "ERCOT", "status": "fail", "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.ercot.com/misapp/servlets/IceDocListJsonWS?reportTypeId=15933&_1788328225", "rows": 0, "digest": null, "path": null}
+{"captured_at": "2026-09-02T05:51:23+00:00", "iso": "MISO", "status": "unchanged", "rows": 3828, "digest": "e545a5376d1e79b6", "path": null, "error": null}
+{"captured_at": "2026-09-02T05:51:23+00:00", "iso": "NYISO", "status": "unchanged", "rows": 3139, "digest": "ee440fceeaf0a7ca", "path": null, "error": null}
+{"captured_at": "2026-09-02T05:51:23+00:00", "iso": "CAISO", "status": "unchanged", "rows": 2278, "digest": "4a007665124e6abe", "path": null, "error": null}
+{"captured_at": "2026-09-02T05:51:23+00:00", "iso": "ISONE", "status": "unchanged", "rows": 1751, "digest": "990e5f73c2baabf2", "path": null, "error": null}
+{"captured_at": "2026-09-02T05:51:23+00:00", "iso": "SPP", "status": "fail", "error": "ConnectTimeout: HTTPSConnectionPool(host='opsportal.spp.org', port=443): Max retries exceeded with url: /Studies/GenerateSummaryCSV (Caused by ConnectTimeoutError(<HTTPSConnect", "rows": 0, "digest": null, "path": null}
+{"captured_at": "2026-09-02T05:51:23+00:00", "iso": "PJM", "status": "fail", "error": "ValueError: api_key must be provided or set in PJM_API_KEY env var", "rows": 0, "digest": null, "path": null}
+{"captured_at": "2026-09-02T05:51:23+00:00", "iso": "ERCOT", "status": "fail", "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.ercot.com/misapp/servlets/IceDocListJsonWS?reportTypeId=15933&_1788328546", "rows": 0, "digest": null, "path": null}
