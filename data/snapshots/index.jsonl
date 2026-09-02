@@ -1,0 +1,7 @@
+{"captured_at": "2026-09-02T05:30:25+00:00", "iso": "MISO", "status": "new", "rows": 3828, "digest": "e545a5376d1e79b6", "path": "MISO/2026-09-02_e545a5376d1e79b6.csv", "error": null}
+{"captured_at": "2026-09-02T05:30:25+00:00", "iso": "NYISO", "status": "new", "rows": 3139, "digest": "ee440fceeaf0a7ca", "path": "NYISO/2026-09-02_ee440fceeaf0a7ca.csv", "error": null}
+{"captured_at": "2026-09-02T05:30:25+00:00", "iso": "CAISO", "status": "new", "rows": 2278, "digest": "4a007665124e6abe", "path": "CAISO/2026-09-02_4a007665124e6abe.csv", "error": null}
+{"captured_at": "2026-09-02T05:30:25+00:00", "iso": "ISONE", "status": "new", "rows": 1751, "digest": "990e5f73c2baabf2", "path": "ISONE/2026-09-02_990e5f73c2baabf2.csv", "error": null}
+{"captured_at": "2026-09-02T05:30:25+00:00", "iso": "SPP", "status": "fail", "error": "ConnectTimeout: HTTPSConnectionPool(host='opsportal.spp.org', port=443): Max retries exceeded with url: /Studies/GenerateSummaryCSV (Caused by ConnectTimeoutError(<HTTPSConnect", "rows": 0, "digest": null, "path": null}
+{"captured_at": "2026-09-02T05:30:25+00:00", "iso": "PJM", "status": "fail", "error": "ValueError: api_key must be provided or set in PJM_API_KEY env var", "rows": 0, "digest": null, "path": null}
+{"captured_at": "2026-09-02T05:30:25+00:00", "iso": "ERCOT", "status": "fail", "error": "HTTPError: 403 Client Error: Forbidden for url: https://www.ercot.com/misapp/servlets/IceDocListJsonWS?reportTypeId=15933&_1788327289", "rows": 0, "digest": null, "path": null}

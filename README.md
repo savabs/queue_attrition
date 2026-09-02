@@ -113,6 +113,38 @@ fuel×ISO crosstab so the remaining confound stays visible.
 - **Nothing here is a forecast.** These are historical base rates. No model has
   been fit and no out-of-sample claim is made.
 
+## The archive — why this is the only part that compounds
+
+The ISOs publish **current state only**. `Status`, `Capacity (MW)`,
+`Proposed Completion Date`, `inService` and `studyPhase` are overwritten in
+place on every refresh. When a 400 MW request is revised to 250, or a 2027
+in-service date slips to 2029, **the previous value is not archived anywhere**
+— not by the ISO, not by `gridstatus`, not by the aggregators.
+
+So the revision history cannot be bought, back-scraped, or reconstructed. It
+can only be accumulated from the first day someone starts. Every day without a
+snapshot is a day of history that is gone permanently.
+
+```
+./venv/bin/python src/snapshot.py         # append-only, content-addressed
+./venv/bin/python src/diff.py MISO        # change events between the last two
+```
+
+Snapshots are hashed on content, so an unchanged refresh costs nothing and
+still leaves a dated entry in `data/snapshots/index.jsonl`.
+
+**`Queue ID` is not a primary key** and diffing on it corrupts the history
+silently. ISONE reuses position `73` across eight different plants; NYISO
+leaves it null on 1,350 historical rows and reuses `0031` for Astoria Phase 1
+(Completed) and Phase 2 (Withdrawn). Identity is therefore a composite —
+`Queue ID + Project Name + County + Interconnection Location + Queue Date` —
+widened only until unique, and rows that still cannot be keyed are reported
+and excluded from change tracking rather than guessed at (MISO 2, ISONE 8,
+NYISO 1,350).
+
+No watched field may appear in the identity key, or a revision would read as a
+departure plus an arrival instead of a change. `src/diff.py` asserts this.
+
 ## Running it
 
 ```
