@@ -102,6 +102,75 @@ reported `Solar 32.1%` next to `Photovoltaic 13.0%` and `Wind 19.1%` next to
 measuring ISO composition. `fuel.py` maps them onto one set and prints the
 fuel×ISO crosstab so the remaining confound stays visible.
 
+## The portfolio question: do outcomes move together?
+
+`src/frailty.py`. A probability per project answers "will this one be built".
+It does not answer "how much will my forty projects deliver", and the gap
+between those two questions is entirely about whether outcomes are independent.
+They are not.
+
+**Stage 1 — is there anything to model?** Given honest out-of-sample
+probabilities, group build counts are compared with what independent Bernoulli
+draws would produce. The comparison is against a *permutation* null — same
+probabilities, same group sizes, group membership shuffled within queue year —
+because the model is miscalibrated and miscalibration inflates raw dispersion
+on its own. A chi-square table would have found "correlation" that was really
+the model saying 65 and meaning 49.
+
+| shared by | groups | dispersion | permuted null | inflation |
+|---|---|---|---|---|
+| fuel | 13 | 13.23 | 3.24 | **4.09x** |
+| state | 27 | 5.64 | 2.15 | 2.62x |
+| ISO study cycle | 59 | 7.41 | 3.93 | 1.88x |
+| county | 132 | 2.14 | 1.19 | 1.80x |
+| ISO | 4 | 15.41 | 8.77 | 1.76x |
+| transmission owner | 22 | 4.32 | 2.51 | 1.72x |
+
+All p < 0.00025, the floor at 4,000 permutations. Technology is the strongest
+shared shock, ahead of geography — tariffs, cell prices and turbine lead times
+hit every project of a type at once.
+
+**Stage 2 — how big is the shock?** A random-intercept logit fitted by marginal
+maximum likelihood, integrating the group effect out with Gauss-Hermite
+quadrature. The study cycle carries tau = 1.06 on the log-odds scale, an ICC of
+25.5%. Levels are fitted one at a time and therefore overlap, so the structure
+is chosen by test rather than by taking the largest tau.
+
+**Stage 3 — does it actually predict better?** Books of 40 are drawn from
+held-out data and scored against each structure's predicted distribution. The
+target for an 80% interval is 80%:
+
+| book | independent | cycle+fuel+county |
+|---|---|---|
+| random | 78.7% | 89.0% |
+| all one state | 74.5% | 88.1% |
+| all one fuel | **62.6%** | 81.5% |
+
+Independence is tolerable for a diversified book and dangerous for a
+concentrated one — which is the realistic case for a developer or a lender. On
+a single-fuel book its 80% interval contains the truth 62.6% of the time.
+
+On the live book of 1,637 active requests, the frailty distribution is **4.3x
+wider** than independence implies and its 1-in-10 bad case is **21.6 GW worse**.
+
+### Read the shape, not the level
+
+Two measured reasons the central estimate deserves less trust than the spread:
+
+1. **Count calibration is not capacity calibration.** Probabilities calibrated
+   so that each *project* is right overstate delivered *capacity* by +20.8%
+   out-of-sample, because gigawatts sit in large projects and large projects
+   fail more inside every size band. Re-fitting the calibration weighted by
+   megawatts cuts the bias to +6.1% for 0.0007 of Brier. Adding a size band as
+   a feature does not fix it — the bias is within bands, not between them.
+2. **The live book is 68% MISO by capacity against 19% in training.** The
+   headline therefore rests largely on one operator's record. 18% of the book's
+   capacity sits in (iso, fuel) cells with fewer than 40 resolved historical
+   requests; `support()` prints them.
+
+The dispersion result is a ratio and survives both. The central estimate does
+not, and is quoted with that attached.
+
 ## Known limitations
 
 - **Fuel and ISO are not fully independent.** Solar, wind, gas and storage

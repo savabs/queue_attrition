@@ -55,12 +55,42 @@ onto a small number of (iso, fuel) cells.
 
 Published as-is at <https://tirramind.com/predictions>, failure included.
 
-## 4. Shared-frailty model
+## 4. Shared-frailty model — BUILT
 
-Project outcomes are not independent — they share ISO study cycles,
-transmission-owner capex, equipment lead times, state policy. Multiplying
-independent probabilities understates tail risk badly. Hierarchical hazard with
-random effects at ISO / transmission-owner / study-cycle level turns
-"this project is 20%" into "your 40-project book delivers a median 2.1 GW by
-2030, 10th percentile 0.9 GW" — which is the question nobody can currently
-answer.
+`src/frailty.py`. Correlation measured before fitting (permutation null, all
+levels p < 0.00025), tau fitted by marginal ML, structure chosen by
+out-of-sample portfolio coverage. Live book: 4.3x wider than independence, P10
+21.6 GW worse. See README.
+
+Open follow-ons:
+- The capacity bias is +6.1% after MW-weighted calibration, not zero. Worth
+  another pass — possibly a separate model for delivered MW rather than a
+  re-calibration of a count model.
+- Levels are fitted marginally and overlap. A properly crossed random-effects
+  fit would give cleaner taus; Monte Carlo EM, since Gauss-Hermite does not
+  factor across crossed levels.
+- PIT on random books is ~0.19 for every structure including independence,
+  which is marginal miscalibration, not a dependence problem. Same root cause
+  as item 3.
+
+## 5. Redistribution terms — check before this earns money
+
+PJM's Data Miner page says outright: *"redistribution of information and or
+derived from Data Miner is strictly prohibited without an active PJM
+Membership. A minimum level of Associate Membership is required."* Non-members
+may query it at 6 connections/minute, but may not republish anything derived
+from it.
+
+That is why PJM is parked rather than pending. The API key was never the
+blocker; the licence is. Getting the key would have supplied data the public
+ledger cannot legally use, which is worse than not having it, because the
+problem surfaces only after something is built on top. The real question is
+what Associate Membership costs and whether it permits publication — a call to
+Member Relations (866-400-8980), not a registration form.
+
+**The open item is the other four.** MISO, CAISO, NYISO and ISO-NE data is
+already being republished in derived form at tirramind.com/predictions. Their
+terms have not been read. Do that before this is commercial, and record what
+each one permits. Independent aggregators are not a precedent worth relying on
+— interconnection.fyi's own terms prohibit exactly the redistribution it
+performs.
