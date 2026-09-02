@@ -1,0 +1,15 @@
+===== 2026-09-02T05:48:44Z =====
+2026-09-02 11:18:45 - INFO - Downloading interconnection queue from https://www.misoenergy.org/api/giqueue/getprojects
+2026-09-02 11:18:50 - INFO - Downloading interconnection queue from https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx
+2026-09-02 11:18:55 - INFO - Downloading interconnection queue from http://www.caiso.com/PublishedDocuments/PublicQueueReport.xlsx
+2026-09-02 11:19:10 - INFO - Getting interconnection queue from https://opsportal.spp.org/Studies/GenerateSummaryCSV
+2026-09-02 11:20:25 - INFO - Fetching document https://www.ercot.com/misapp/servlets/IceDocListJsonWS?reportTypeId=15933&_1788328225
+2026-09-02 11:20:25 - INFO - Requesting https://www.ercot.com/misapp/servlets/IceDocListJsonWS?reportTypeId=15933&_1788328225 with {}
+MISO     3828 rows  unchanged (e545a5376d1e79b6)
+NYISO    3139 rows  unchanged (ee440fceeaf0a7ca)
+CAISO    2278 rows  unchanged (4a007665124e6abe)
+ISONE    1751 rows  unchanged (990e5f73c2baabf2)
+SPP    FAIL  ConnectTimeout: HTTPSConnectionPool(host='opsportal.spp.org', port=443): Max retries e
+PJM    FAIL  ValueError: api_key must be provided or set in PJM_API_KEY env var
+ERCOT  FAIL  HTTPError: 403 Client Error: Forbidden for url: https://www.ercot.com/misapp/serv
+snapshot.py exit=0
