@@ -128,6 +128,22 @@ snapshot is a day of history that is gone permanently.
 ```
 ./venv/bin/python src/snapshot.py         # append-only, content-addressed
 ./venv/bin/python src/diff.py MISO        # change events between the last two
+./venv/bin/python src/health.py           # days since each ISO last captured
+```
+
+**This runs automatically.** `scripts/daily_snapshot.sh` is driven by a launchd
+agent (`~/Library/LaunchAgents/com.savabs.queue-snapshot.plist`) at 09:15 daily
+and again at login — launchd runs a missed job once on the next wake rather
+than skipping the day, and duplicate runs are free because snapshots are
+content-addressed. The job commits `data/snapshots` only, so it can never
+sweep up unfinished source edits, and it runs `src/health.py` every time
+because a snapshot job that dies quietly is the one failure that cannot be
+repaired later.
+
+```
+launchctl list | grep queue-snapshot          # is it loaded
+tail -40 data/snapshots/run.log               # what it did last
+launchctl unload -w ~/Library/LaunchAgents/com.savabs.queue-snapshot.plist   # stop it
 ```
 
 Snapshots are hashed on content, so an unchanged refresh costs nothing and

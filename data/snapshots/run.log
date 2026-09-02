@@ -13,3 +13,4 @@ SPP    FAIL  ConnectTimeout: HTTPSConnectionPool(host='opsportal.spp.org', port=
 PJM    FAIL  ValueError: api_key must be provided or set in PJM_API_KEY env var
 ERCOT  FAIL  HTTPError: 403 Client Error: Forbidden for url: https://www.ercot.com/misapp/serv
 snapshot.py exit=0
+committed 22410ce
