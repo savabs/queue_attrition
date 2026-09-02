@@ -55,4 +55,12 @@ if [[ $HRC -ne 0 ]]; then
   print -r -- "WARNING: archive health check returned $HRC — history is being lost" >> "$LOG"
 fi
 
+# Weekly nudge for a credential that is still missing. Mondays only, so it is
+# not nagging, and it stops on its own the moment .env has the key -- no state
+# file, nothing to remember to switch off.
+if [[ "$(date +%u)" == "1" && -z "${PJM_API_KEY:-}" ]]; then
+  /usr/bin/osascript -e 'display notification "PJM is the largest datacenter market publishing a queue. See NEXT.md." with title "queue_attrition" subtitle "PJM API key still missing"' 2>>"$LOG"
+  print -r -- "nudge: PJM_API_KEY still unset" >> "$LOG"
+fi
+
 exit $RC
