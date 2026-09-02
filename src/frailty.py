@@ -373,6 +373,17 @@ def _live_book(weight_by_capacity: bool = True) -> pd.DataFrame:
         m.fit(train[CAT + NUM], train["y"])
     a = active_rows()
     a = a.assign(p=m.predict_proba(a[CAT + NUM])[:, 1])
+
+    # Drop the same duplicate identities the ledger drops. Without this the
+    # book is 1,637 rows against the ledger's 1,636 and the two disagree in
+    # public over one row, which is the kind of discrepancy that costs more
+    # trust than the row is worth.
+    from diff import KEY_PARTS
+    parts = [c for c in KEY_PARTS if c in a.columns]
+    ident = a[parts].fillna("").astype(str).agg("|".join, axis=1)
+    a = a.assign(_eid=a["iso"] + ":" + ident)
+    a = a[~a["_eid"].duplicated()]
+
     a["cycle"] = a["iso"].astype(str) + ":" + a["queue_year"].astype(int).astype(str)
     return a
 
