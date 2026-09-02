@@ -10,3 +10,11 @@ data/raw/
 # timestamps each refresh, which is what makes the base rates checkable
 # rather than merely asserted.
 !data/queue_attrition.csv
+
+# Run logs: local noise, rewritten every day. The structured uptime record is
+# data/snapshots/index.jsonl, which IS tracked -- it carries one row per ISO
+# per run including failures, so the daily commit is itself the proof the job
+# ran, without dragging launchd's stdout along with it.
+data/snapshots/run.log
+data/snapshots/launchd.out.log
+data/snapshots/launchd.err.log
