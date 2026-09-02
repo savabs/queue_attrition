@@ -13,9 +13,15 @@ import sys
 import warnings
 from datetime import datetime, timezone
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 warnings.filterwarnings("ignore")
 
 import gridstatus  # noqa: E402
+
+from env import load as _load_env  # noqa: E402
+
+_load_env()
 
 RAW = os.path.join(os.path.dirname(__file__), "..", "data", "raw")
 

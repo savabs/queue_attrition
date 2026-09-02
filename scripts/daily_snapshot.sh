@@ -17,6 +17,15 @@ print -r -- "===== $STAMP =====" >> "$LOG"
 
 cd "$PROJECT" || { print -r -- "FATAL: no $PROJECT" >> "$LOG"; exit 1; }
 
+# launchd hands this script an almost empty environment, so credentials come
+# from .env rather than from any shell profile. src/env.py loads the same file
+# on the Python side; this is here so anything shell-level sees it too.
+if [[ -f "$PROJECT/.env" ]]; then
+  set -a
+  source "$PROJECT/.env"
+  set +a
+fi
+
 if [[ ! -x "$PY" ]]; then
   print -r -- "FATAL: venv python missing at $PY" >> "$LOG"
   exit 1

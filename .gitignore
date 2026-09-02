@@ -18,3 +18,6 @@ data/raw/
 data/snapshots/run.log
 data/snapshots/launchd.out.log
 data/snapshots/launchd.err.log
+
+# Credentials. Never commit.
+.env

@@ -26,7 +26,10 @@ credentials required:
 
 Three do not:
 
-- **PJM** — requires a free `PJM_API_KEY`.
+- **PJM** — requires a free `PJM_API_KEY`. Worth getting: PJM is the largest
+  datacenter market that publishes a queue at all. Register at
+  [apiportal.pjm.com](https://apiportal.pjm.com/), verify the email, then copy
+  the Primary key from your profile's subscriptions into `.env`.
 - **ERCOT** — 403s all scripted access. Publishes large-load only in aggregate.
 - **SPP** — ops portal times out from here; may be transient.
 
@@ -139,6 +142,20 @@ content-addressed. The job commits `data/snapshots` only, so it can never
 sweep up unfinished source edits, and it runs `src/health.py` every time
 because a snapshot job that dies quietly is the one failure that cannot be
 repaired later.
+
+### Credentials
+
+Copy `.env.example` to `.env` and fill it in. **Do not export keys in
+`~/.zshrc`** — launchd starts jobs with a nearly empty environment and reads no
+shell profile, so a key set that way works when you test it by hand and is
+absent every night in the scheduled run, failing with a network-shaped error
+that looks exactly like the source being down. `src/env.py` loads `.env` on the
+Python side and the wrapper sources it on the shell side, so manual and
+automated runs behave identically.
+
+```
+./venv/bin/python src/check_keys.py     # verify a key actually works
+```
 
 ```
 launchctl list | grep queue-snapshot          # is it loaded
