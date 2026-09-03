@@ -87,6 +87,36 @@ def build() -> pd.DataFrame:
     all_["queue_year"] = all_["queue_date"].dt.year
     all_["capacity_mw"] = pd.to_numeric(all_["Capacity (MW)"], errors="coerce")
 
+    # A row with no identifying field is not a request.
+    #
+    # NYISO publishes its withdrawn projects on a spreadsheet tab holding 2,515
+    # rows, of which only 1,452 carry a queue position. The remaining 1,063 are
+    # padding: no ID, no name, no date, no location, capacity 0.0, and a Status
+    # column filled down to "Withdrawn". A second variant adds 287 more. The
+    # reader ingests all of them as withdrawn projects.
+    #
+    # They never reached the headline, because every quoted rate restricts to
+    # queue-year cohorts and these rows have no date. They did reach the row
+    # count and the naive built/(built+withdrawn) figure, which they dragged
+    # from 16.6% to 14.2% -- 1,350 phantom failures.
+    ident = [c for c in ("Queue ID", "Project Name", "Queue Date",
+                         "Interconnection Location", "County",
+                         "Interconnecting Entity") if c in all_.columns]
+    anonymous = all_[ident].isna().all(axis=1)
+    if anonymous.any():
+        print(f"dropping {int(anonymous.sum()):,} rows with no identifying field "
+              f"(spreadsheet padding read as withdrawn projects)")
+        all_ = all_[~anonymous].copy()
+
+    # The same request listed twice inflates whatever it is counted into.
+    dupes = all_.duplicated()
+    if dupes.any():
+        print(f"dropping {int(dupes.sum()):,} exactly duplicated rows")
+        all_ = all_[~dupes].copy()
+
+    assert not all_[ident].isna().all(axis=1).any(), "unidentifiable rows survived"
+    assert not all_.duplicated().any(), "duplicate rows survived"
+
     # resolved = the outcome is actually known. Everything else is censored and
     # must be excluded from any rate, not counted as a survivor.
     all_["resolved"] = all_["outcome"].isin(["built", "withdrawn"])
