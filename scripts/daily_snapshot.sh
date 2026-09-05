@@ -43,8 +43,36 @@ if [[ -n "$(git status --porcelain data/snapshots 2>/dev/null)" ]]; then
   git -c user.name="savabs" -c user.email="999.sbpatel@gmail.com" \
       commit -q -m "snapshot: $(date -u +%Y-%m-%d)" >> "$LOG" 2>&1
   print -r -- "committed $(git rev-parse --short HEAD)" >> "$LOG"
+
+  # This machine is no longer the only writer -- .github/workflows/snapshot.yml
+  # captures the same archive daily and pushes -- so committing and forgetting
+  # would leave the two permanently diverged. Rebase onto CI, then push.
+  #
+  # Every git call below is best-effort and deliberately not fatal: a laptop
+  # that is offline, tethered, or behind a network that blocks ssh must still
+  # keep capturing. The snapshot on disk is the irreplaceable part; the push
+  # can happen tomorrow.
+  if git pull --rebase --autostash origin main >> "$LOG" 2>&1; then
+    if git push origin main >> "$LOG" 2>&1; then
+      print -r -- "pushed $(git rev-parse --short HEAD)" >> "$LOG"
+    else
+      print -r -- "NOTE: push failed (offline?) — the commit is safe locally" >> "$LOG"
+    fi
+  else
+    print -r -- "NOTE: rebase failed — resolve by hand; the commit is safe locally" >> "$LOG"
+  fi
 else
   print -r -- "nothing new to commit" >> "$LOG"
+fi
+
+# Row counts, not exit codes. snapshot.py returns 0 even when every ISO fails,
+# because a failure is recorded as a row rather than raised -- so its exit code
+# says nothing about whether the archive grew.
+"$PY" src/ci_verify.py >> "$LOG" 2>&1
+VRC=$?
+if [[ $VRC -ne 0 ]]; then
+  print -r -- "ALERT: zero sources captured — history is being lost right now" >> "$LOG"
+  /usr/bin/osascript -e 'display notification "Zero ISOs captured. A lost day cannot be recovered by anyone." with title "queue_attrition" subtitle "ARCHIVE FAILING"' 2>>"$LOG"
 fi
 
 # Surface staleness in the log. A job that silently stops is the only failure

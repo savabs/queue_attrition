@@ -1,0 +1,88 @@
+# Daily archive of every ISO interconnection queue.
+#
+# The ISOs publish current state only and overwrite in place. A day this does
+# not run is a day of revision history that nobody can recover afterwards --
+# not us, not an aggregator, not the ISO. That is the entire reason this job
+# exists, and the reason it runs here as well as on a laptop.
+#
+# Running from two places is safe and deliberate. Snapshots are content-
+# addressed, so a refresh returning identical bytes writes no new file; a
+# double capture on the same day costs nothing. The laptop can be shut, on a
+# plane, or asleep. This cannot.
+name: snapshot
+
+on:
+  schedule:
+    # 10:20 UTC. Deliberately offset from the laptop job (~03:50 UTC) so that
+    # this catches a day the laptop missed rather than racing it. GitHub runs
+    # scheduled jobs on a best-effort basis and delays of an hour are normal --
+    # acceptable here, because the queue is a daily snapshot, not a tick.
+    - cron: "20 10 * * *"
+  workflow_dispatch:
+
+# Never let two runs write the archive at once.
+concurrency:
+  group: snapshot
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Capture
+        # snapshot.py exits 0 even when every ISO fails -- failures are recorded
+        # as rows, not raised. So its exit code is not evidence of anything and
+        # the real gate is the row-count check below.
+        run: python src/ci_verify.py || true   # print prior state for the log
+        continue-on-error: true
+
+      - name: Snapshot
+        env:
+          PJM_API_KEY: ${{ secrets.PJM_API_KEY }}
+          EIA_API_KEY: ${{ secrets.EIA_API_KEY }}
+        run: python src/snapshot.py
+
+      - name: Verify row counts
+        # THE gate. Fails only when zero sources captured, because ERCOT (bot
+        # wall), PJM (no key) and SPP (timeout) fail on every run by design and
+        # must not turn the job red. Losing all four working ISOs must.
+        run: python src/ci_verify.py
+
+      - name: Commit the archive
+        run: |
+          set -eu
+          if [ -z "$(git status --porcelain data/snapshots)" ]; then
+            echo "nothing new to commit — every source returned identical bytes"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Scoped add: an automated job must never sweep up source edits.
+          git add data/snapshots
+          git commit -q -m "snapshot: $(date -u +%Y-%m-%d) [ci]"
+          # The laptop commits locally and may have pushed since checkout.
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
+            git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            echo "push race, retry $i"; sleep 5
+          done
+          echo "FAILED to push the archive after 3 attempts"; exit 1
+
+      - name: Staleness report
+        # Advisory. health.py only complains after 14 days, which is far too
+        # slow to be an alert -- the gate above is what catches a lost day.
+        if: always()
+        run: python src/health.py || true

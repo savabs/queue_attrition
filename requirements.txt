@@ -1,0 +1,9 @@
+# Pinned to what the archive job actually needs. Deliberately NOT the full
+# research stack -- sklearn/scipy are only used by model.py and frailty.py,
+# which never run in CI. A smaller install is a smaller thing to break at
+# 06:00 on a morning nobody is watching.
+gridstatus==0.36.0
+pandas==2.3.3
+numpy==2.5.2
+requests==2.34.2
+openpyxl==3.1.5
