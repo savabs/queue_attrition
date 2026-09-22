@@ -166,3 +166,10 @@
 {"captured_at": "2026-09-21T10:31:38+00:00", "iso": "SPP", "status": "unchanged", "rows": 3074, "digest": "0bbaa3c6a015a95d", "path": null, "error": null}
 {"captured_at": "2026-09-21T10:31:38+00:00", "iso": "PJM", "status": "fail", "error": "ValueError: api_key must be provided or set in PJM_API_KEY env var", "rows": 0, "digest": null, "path": null}
 {"captured_at": "2026-09-21T10:31:38+00:00", "iso": "ERCOT", "status": "unchanged", "rows": 1778, "digest": "7f8d977957948ac7", "path": null, "error": null}
+{"captured_at": "2026-09-22T10:31:39+00:00", "iso": "MISO", "status": "fail", "error": "AssertionError: Extra column Interconnection Approval Date does not exist", "rows": 0, "digest": null, "path": null}
+{"captured_at": "2026-09-22T10:31:39+00:00", "iso": "NYISO", "status": "fail", "error": "RuntimeError: GET https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx failed: <Response [202]>", "rows": 0, "digest": null, "path": null}
+{"captured_at": "2026-09-22T10:31:39+00:00", "iso": "CAISO", "status": "new", "rows": 2278, "digest": "817d76abd9ac31f8", "path": "CAISO/2026-09-22_817d76abd9ac31f8.csv", "error": null}
+{"captured_at": "2026-09-22T10:31:39+00:00", "iso": "ISONE", "status": "new", "rows": 1751, "digest": "a15fbfd50196d733", "path": "ISONE/2026-09-22_a15fbfd50196d733.csv", "error": null}
+{"captured_at": "2026-09-22T10:31:39+00:00", "iso": "SPP", "status": "new", "rows": 3074, "digest": "4b6fe94bc0955e90", "path": "SPP/2026-09-22_4b6fe94bc0955e90.csv", "error": null}
+{"captured_at": "2026-09-22T10:31:39+00:00", "iso": "PJM", "status": "fail", "error": "ValueError: api_key must be provided or set in PJM_API_KEY env var", "rows": 0, "digest": null, "path": null}
+{"captured_at": "2026-09-22T10:31:39+00:00", "iso": "ERCOT", "status": "unchanged", "rows": 1778, "digest": "7f8d977957948ac7", "path": null, "error": null}
