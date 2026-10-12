@@ -306,3 +306,10 @@
 {"captured_at": "2026-10-11T16:21:11+00:00", "iso": "SPP", "status": "unchanged", "rows": 3076, "digest": "f28a6cb1d82d54bc", "path": null, "error": null}
 {"captured_at": "2026-10-11T16:21:11+00:00", "iso": "PJM", "status": "fail", "error": "ValueError: api_key must be provided or set in PJM_API_KEY env var", "rows": 0, "digest": null, "path": null}
 {"captured_at": "2026-10-11T16:21:11+00:00", "iso": "ERCOT", "status": "unchanged", "rows": 1758, "digest": "50e5415a9d2caf12", "path": null, "error": null}
+{"captured_at": "2026-10-12T19:52:45+00:00", "iso": "MISO", "status": "unchanged", "rows": 3938, "digest": "5d324062fb06dc8b", "path": null, "error": null}
+{"captured_at": "2026-10-12T19:52:45+00:00", "iso": "NYISO", "status": "fail", "error": "RuntimeError: GET https://www.nyiso.com/documents/20142/1407078/NYISO-Interconnection-Queue.xlsx failed: <Response [202]>", "rows": 0, "digest": null, "path": null}
+{"captured_at": "2026-10-12T19:52:45+00:00", "iso": "CAISO", "status": "unchanged", "rows": 2278, "digest": "6b41229bdd528a4d", "path": null, "error": null}
+{"captured_at": "2026-10-12T19:52:45+00:00", "iso": "ISONE", "status": "unchanged", "rows": 1751, "digest": "7cbed5371d2a7eb2", "path": null, "error": null}
+{"captured_at": "2026-10-12T19:52:45+00:00", "iso": "SPP", "status": "new", "rows": 3076, "digest": "673be6039668a2b6", "path": "SPP/2026-10-12_673be6039668a2b6.csv", "error": null}
+{"captured_at": "2026-10-12T19:52:45+00:00", "iso": "PJM", "status": "fail", "error": "ValueError: api_key must be provided or set in PJM_API_KEY env var", "rows": 0, "digest": null, "path": null}
+{"captured_at": "2026-10-12T19:52:45+00:00", "iso": "ERCOT", "status": "unchanged", "rows": 1758, "digest": "50e5415a9d2caf12", "path": null, "error": null}
