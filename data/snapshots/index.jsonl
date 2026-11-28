@@ -635,3 +635,10 @@
 {"captured_at": "2026-11-27T19:31:42+00:00", "iso": "SPP", "status": "unchanged", "rows": 3081, "digest": "bc1bc976bc9086dd", "path": null, "error": null}
 {"captured_at": "2026-11-27T19:31:42+00:00", "iso": "PJM", "status": "fail", "error": "ValueError: api_key must be provided or set in PJM_API_KEY env var", "rows": 0, "digest": null, "path": null}
 {"captured_at": "2026-11-27T19:31:42+00:00", "iso": "ERCOT", "status": "unchanged", "rows": 1736, "digest": "15e97ca6d42938f9", "path": null, "error": null}
+{"captured_at": "2026-11-28T18:17:33+00:00", "iso": "MISO", "status": "unchanged", "rows": 4106, "digest": "82fb161babb6b8ee", "path": null, "error": null}
+{"captured_at": "2026-11-28T18:17:33+00:00", "iso": "NYISO", "status": "new", "rows": 3215, "digest": "27c86400ddb7c671", "path": "NYISO/2026-11-28_27c86400ddb7c671.csv", "error": null}
+{"captured_at": "2026-11-28T18:17:33+00:00", "iso": "CAISO", "status": "unchanged", "rows": 2278, "digest": "331c4e41c5abe12b", "path": null, "error": null}
+{"captured_at": "2026-11-28T18:17:33+00:00", "iso": "ISONE", "status": "unchanged", "rows": 1751, "digest": "34a4cc5aebac2501", "path": null, "error": null}
+{"captured_at": "2026-11-28T18:17:33+00:00", "iso": "SPP", "status": "unchanged", "rows": 3081, "digest": "bc1bc976bc9086dd", "path": null, "error": null}
+{"captured_at": "2026-11-28T18:17:33+00:00", "iso": "PJM", "status": "fail", "error": "ValueError: api_key must be provided or set in PJM_API_KEY env var", "rows": 0, "digest": null, "path": null}
+{"captured_at": "2026-11-28T18:17:33+00:00", "iso": "ERCOT", "status": "unchanged", "rows": 1736, "digest": "15e97ca6d42938f9", "path": null, "error": null}
